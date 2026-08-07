@@ -1,0 +1,48 @@
+name: Daily weETH refresh
+
+on:
+  schedule:
+    - cron: "20 7 * * *"   # 07:20 UTC — just after the AUM dashboard refresh
+  workflow_dispatch: {}    # manual "run now" trigger
+
+permissions:
+  contents: write          # to commit refreshed snapshots
+
+concurrency:
+  group: weeth-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Refresh snapshot
+        # Without DUNE_API_KEY the script still runs: it re-prices from CoinGecko
+        # and rebuilds positions from the committed event cache, flagging the page
+        # as "cached" rather than publishing a stale-but-unlabelled number.
+        env:
+          DUNE_API_KEY: ${{ secrets.DUNE_API_KEY }}
+        run: python weeth_refresh.py
+
+      - name: Commit refreshed snapshot
+        run: |
+          git config user.name  "kpk-weeth-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/weeth_events.json data/weeth_latest.json weeth-data.js weeth-etherfi-dashboard.html
+          if git diff --cached --quiet; then
+            echo "No snapshot changes to commit."
+          else
+            git commit -m "chore: daily weETH refresh ($(date -u +%Y-%m-%d))"
+            git push
+          fi

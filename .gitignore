@@ -1,0 +1,15 @@
+# Secrets — never commit. The only secret this project uses is DUNE_API_KEY.
+configurator.json
+.env
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+
+# Local noise
+logs/
+.DS_Store
+Thumbs.db

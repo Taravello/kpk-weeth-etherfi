@@ -1,0 +1,44 @@
+# kpk — weETH (ether.fi) allocation dashboard configuration.
+#
+# Everything here is PUBLIC data: the managed DAO wallets are public onchain
+# addresses and the token is a public contract. The only secret is DUNE_API_KEY,
+# which lives in a GitHub Actions secret (CI) or a gitignored configurator.json /
+# .env locally — never in this file.
+
+firm:
+  name: "kpk"
+
+# Managed wallet registry. Mirrors clients[] in the kpk AUM dashboard; the Dune
+# SQL is regenerated from this list on every run, so the query cannot drift.
+# A local configurator.json, when present, overrides this list.
+clients:
+  - name: "CoW DAO"
+    addresses:
+      - { address: "0x616de58c011f8736fa20c7ae5352f7f6fb9f0669", chains: [ethereum, gnosis] }
+      - { address: "0x7f8987d6a8bee31bd7be80e877732579e2582a28", chains: [gnosis] }
+      - { address: "0x9009B4411D0e1171cc042b77D7701f46B737Fdb9", chains: [gnosis] }
+  - name: "Balancer DAO"
+    addresses:
+      - { address: "0x0efccbb9e2c09ea29551879bd9da32362b32fc89", chains: [ethereum, arbitrum, gnosis] }
+  - name: "ENS"
+    addresses:
+      - { address: "0x4f2083f5fbede34c2714affb3105539775f7fe64", chains: [ethereum] }
+  - name: "Nexus Mutual"
+    addresses:
+      - { address: "0x8e53d04644e9ab0412a8c6bd228c84da7664cfe3", chains: [ethereum] }
+
+etherfi:
+  enabled: true
+  token:
+    symbol: weETH
+    address: "0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee"
+    chain: ethereum
+    decimals: 18
+    coingecko: wrapped-eeth
+  reference_coingecko: weth        # ETH-equivalent reference price
+  query_id: 8252383                # Dune query; SQL is rewritten from clients[]
+  performance: medium              # Dune engine tier for the refresh
+  events_cache: "data/weeth_events.json"
+
+dune:
+  api_key_env: "DUNE_API_KEY"      # NAME of the env var; the key itself is a secret
