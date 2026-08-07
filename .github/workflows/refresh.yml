@@ -28,11 +28,9 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Refresh snapshot
-        # Without DUNE_API_KEY the script still runs: it re-prices from CoinGecko
-        # and rebuilds positions from the committed event cache, flagging the page
-        # as "cached" rather than publishing a stale-but-unlabelled number.
-        env:
-          DUNE_API_KEY: ${{ secrets.DUNE_API_KEY }}
+        # No secrets: positions and history come from public Ethereum RPC nodes,
+        # pricing from the public CoinGecko API. The step exits non-zero if every
+        # RPC endpoint is unreachable, leaving the last good snapshot published.
         run: python weeth_refresh.py
 
       - name: Commit refreshed snapshot

@@ -1,27 +1,93 @@
 {
-  "_comment": "weETH (ether.fi) allocation events for the kpk-managed DAOs, as returned by the Dune query in config.yaml -> etherfi.query_id. Every row is a day on which at least one weETH transfer touched a managed wallet; net_flow is gross in minus gross out for that DAO that day. Rewritten by `python weeth_refresh.py` on each live run; kept in git so the dashboard can be rebuilt offline.",
-  "fetched_at": "2026-08-07 09:24 UTC",
-  "execution_id": "01KZDS411S08RD7CRJQBGYDD6Q",
-  "query_id": 8252383,
+  "_comment": "Append-only log of weETH (ether.fi) allocation events for the kpk-managed DAOs, read from Ethereum public RPC Transfer logs. Each row is a day on which at least one weETH transfer touched a managed wallet; net_flow is gross in minus gross out for that DAO that day. `last_block` is the scan cursor: each run reads only the blocks mined since it, then verifies the replayed history against live balanceOf. Committed so the page can be rebuilt offline.",
+  "fetched_at": "2026-08-07 10:43 UTC",
   "token_address": "0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee",
   "events": [
-    { "day": "2025-04-30", "dao": "Nexus Mutual", "net_flow": 8.966960050102228,   "transfers": 1 },
-    { "day": "2025-05-05", "dao": "Nexus Mutual", "net_flow": -8.966960050102228,  "transfers": 1 },
-    { "day": "2025-07-14", "dao": "Nexus Mutual", "net_flow": 12.531392215738105,  "transfers": 1 },
-    { "day": "2025-07-15", "dao": "Nexus Mutual", "net_flow": -12.531392215738105, "transfers": 1 },
-    { "day": "2026-06-23", "dao": "ENS",          "net_flow": 3920.832465779969,   "transfers": 1 },
-    { "day": "2026-06-24", "dao": "ENS",          "net_flow": 1357.5851213218868,  "transfers": 1 },
-    { "day": "2026-06-26", "dao": "Nexus Mutual", "net_flow": 103.51021009302254,  "transfers": 2 },
-    { "day": "2026-07-13", "dao": "CoW DAO",      "net_flow": 547.7212796102178,   "transfers": 2 },
-    { "day": "2026-07-20", "dao": "ENS",          "net_flow": 183.2390114778293,   "transfers": 1 },
-    { "day": "2026-07-23", "dao": "ENS",          "net_flow": 1987.4771752229342,  "transfers": 1 },
-    { "day": "2026-08-04", "dao": "CoW DAO",      "net_flow": 94.12662974081819,   "transfers": 1 },
-    { "day": "2026-08-05", "dao": "Balancer DAO", "net_flow": 350.8230632047732,   "transfers": 1 }
+    {
+      "day": "2025-04-30",
+      "dao": "Nexus Mutual",
+      "net_flow": 8.966960050102228,
+      "transfers": 1
+    },
+    {
+      "day": "2025-05-05",
+      "dao": "Nexus Mutual",
+      "net_flow": -8.966960050102228,
+      "transfers": 1
+    },
+    {
+      "day": "2025-07-14",
+      "dao": "Nexus Mutual",
+      "net_flow": 12.531392215738105,
+      "transfers": 1
+    },
+    {
+      "day": "2025-07-15",
+      "dao": "Nexus Mutual",
+      "net_flow": -12.531392215738105,
+      "transfers": 1
+    },
+    {
+      "day": "2026-06-23",
+      "dao": "ENS",
+      "net_flow": 3920.832465779969,
+      "transfers": 1
+    },
+    {
+      "day": "2026-06-24",
+      "dao": "ENS",
+      "net_flow": 1357.5851213218868,
+      "transfers": 1
+    },
+    {
+      "day": "2026-06-26",
+      "dao": "Nexus Mutual",
+      "net_flow": 103.51021009302254,
+      "transfers": 2
+    },
+    {
+      "day": "2026-07-13",
+      "dao": "CoW DAO",
+      "net_flow": 547.7212796102178,
+      "transfers": 2
+    },
+    {
+      "day": "2026-07-20",
+      "dao": "ENS",
+      "net_flow": 183.2390114778293,
+      "transfers": 1
+    },
+    {
+      "day": "2026-07-23",
+      "dao": "ENS",
+      "net_flow": 1987.4771752229342,
+      "transfers": 1
+    },
+    {
+      "day": "2026-08-04",
+      "dao": "CoW DAO",
+      "net_flow": 94.12662974081819,
+      "transfers": 1
+    },
+    {
+      "day": "2026-08-05",
+      "dao": "Balancer DAO",
+      "net_flow": 350.8230632047732,
+      "transfers": 1
+    }
   ],
   "prices": {
-    "weeth_usd": 2102.79,
-    "eth_usd": 1910.29,
-    "as_of": "2026-08-07 09:24 UTC",
-    "source": "dune prices.usd (ethereum)"
+    "weeth_usd": 2105.96,
+    "eth_usd": 1912.56,
+    "as_of": "2026-08-07 10:43 UTC",
+    "source": "coingecko spot"
+  },
+  "source": "ethereum public RPC (balanceOf + Transfer logs)",
+  "last_block": 25702567,
+  "verification": {
+    "method": "erc20 balanceOf via public RPC",
+    "wallets_checked": 6,
+    "matched": true,
+    "max_drift_weeth": 0.0
   }
 }

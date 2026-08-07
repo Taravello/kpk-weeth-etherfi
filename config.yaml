@@ -1,16 +1,16 @@
 # kpk — weETH (ether.fi) allocation dashboard configuration.
 #
 # Everything here is PUBLIC data: the managed DAO wallets are public onchain
-# addresses and the token is a public contract. The only secret is DUNE_API_KEY,
-# which lives in a GitHub Actions secret (CI) or a gitignored configurator.json /
-# .env locally — never in this file.
+# addresses and the token is a public contract. This project uses NO secrets —
+# positions and history come from public Ethereum RPC nodes and pricing from the
+# public CoinGecko API, so there is nothing to keep out of this file.
 
 firm:
   name: "kpk"
 
-# Managed wallet registry. Mirrors clients[] in the kpk AUM dashboard; the Dune
-# SQL is regenerated from this list on every run, so the query cannot drift.
-# A local configurator.json, when present, overrides this list.
+# Managed wallet registry. Mirrors clients[] in the kpk AUM dashboard. Every
+# refresh reads weETH balances and Transfer logs for exactly these addresses,
+# so adding one here is all it takes to bring a DAO onto the page.
 clients:
   - name: "CoW DAO"
     addresses:
@@ -36,9 +36,15 @@ etherfi:
     decimals: 18
     coingecko: wrapped-eeth
   reference_coingecko: weth        # ETH-equivalent reference price
-  query_id: 8252383                # Dune query; SQL is rewritten from clients[]
-  performance: medium              # Dune engine tier for the refresh
   events_cache: "data/weeth_events.json"
 
-dune:
-  api_key_env: "DUNE_API_KEY"      # NAME of the env var; the key itself is a secret
+# Public Ethereum RPC endpoints — no key, no account, no rate-limit tier.
+# Tried in order; whichever answers first is promoted for the rest of the run,
+# so one node being down or throttling never fails a refresh.
+rpc:
+  endpoints:
+    - "https://eth.drpc.org"
+    - "https://ethereum.publicnode.com"
+    - "https://rpc.ankr.com/eth"
+    - "https://cloudflare-eth.com"
+    - "https://eth.llamarpc.com"

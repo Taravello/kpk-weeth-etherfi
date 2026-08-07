@@ -251,7 +251,7 @@
   }
   function hideTip() { if (tip) tip.style.display = "none"; }
 
-  var T = D.totals, P = D.prices;
+  var T = D.totals, P = D.prices, V = D.verification || {};
 
   // ---- top bar + hero ---------------------------------------------------
   var badge = D.mode === "live" ? "" : '<span class="badge">' + esc(D.mode) + "</span>";
@@ -358,12 +358,20 @@
     "<p><strong>Token.</strong> ether.fi weETH <code>" + esc(D.token.address) + "</code> on " + esc(D.token.chain) +
     ". weETH is the non-rebasing wrapper of eETH: the balance is constant and staking yield accrues in the " +
     "redemption rate, so the ETH equivalent above rises even when the weETH count does not.</p>" +
-    "<p><strong>Wallets.</strong> The " + T.wallets + " managed addresses in the AUM dashboard's client " +
-    "roster (<code>config.yaml → clients[]</code>, overridden by <code>configurator.json</code>). Adding a " +
-    "client or an address there feeds this page automatically.</p>" +
-    "<p><strong>Sources.</strong> Allocation history from Dune (<code>erc20_ethereum.evt_Transfer</code>, " +
-    "query <code>" + esc(D.token.query_id || "etherfi.query_id") + "</code>), priced with " + esc(P.source) +
-    " as of " + esc(P.as_of || D.updated_at) + ". Same <code>DUNE_API_KEY</code> secret as the daily AUM refresh.</p>" +
+    "<p><strong>Wallets.</strong> The " + T.wallets + " managed addresses in the kpk client roster " +
+    "(<code>config.yaml → clients[]</code>). Adding a client or an address there feeds this page " +
+    "automatically.</p>" +
+    "<p><strong>Sources.</strong> Balances and transfer history are read straight from Ethereum public " +
+    "RPC nodes (<code>balanceOf</code> and <code>Transfer</code> logs), priced with " + esc(P.source) +
+    " as of " + esc(P.as_of || D.updated_at) + ". No API key is involved anywhere, so every figure here " +
+    "is independently verifiable by anyone against the same public endpoints.</p>" +
+    (V.wallets_checked
+      ? "<p><strong>Self-check.</strong> Every refresh replays the full transfer history and compares it " +
+        "against the live onchain balance of each managed wallet. Last run: " +
+        (V.matched ? "matched all " + V.wallets_checked + " wallets exactly"
+                   : "drift of " + fmt(V.max_drift_weeth, 6) + " weETH detected and reconciled") +
+        ".</p>"
+      : "") +
     "</div>";
 
   app.innerHTML = html;

@@ -1,4 +1,6 @@
-# Secrets — never commit. The only secret this project uses is DUNE_API_KEY.
+# This project uses no secrets at all. These entries stay as a standing guard so
+# a key can never be committed here by accident (e.g. a configurator copied in
+# from a sibling kpk repo).
 configurator.json
 .env
 *.key
