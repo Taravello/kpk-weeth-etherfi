@@ -49,8 +49,10 @@ Open `index.html` directly (it loads `weeth-data.js` over `file://`), or share
 
 Everything lives in `config.yaml`:
 
-- **`clients[]`** — the managed wallet registry. Add a DAO or an address here
-  and it appears on the page on the next run.
+- **`clients[]`** — the managed wallet registry. Add an entity or an address
+  here and it appears on the page on the next run. An entity may optionally
+  carry `color: "#RRGGBB"` to override the palette; entities without one take
+  the monochrome ramp in size order, so darkest still reads as largest.
 - **`etherfi.token`** — the weETH contract, chain, decimals and CoinGecko id.
 - **`rpc.endpoints`** — public Ethereum nodes, tried in order. Whichever answers
   first is promoted for the rest of the run, so one node being down or

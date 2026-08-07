@@ -26,6 +26,14 @@ clients:
   - name: "Nexus Mutual"
     addresses:
       - { address: "0x8e53d04644e9ab0412a8c6bd228c84da7664cfe3", chains: [ethereum] }
+  # Nexus Mutual's Capital Pool — a protocol contract, not a treasury Safe, so it
+  # is reported as its own entity rather than folded into the Nexus Mutual line.
+  # `color` overrides the monochrome ramp for this entity only; the remaining
+  # entities still take the ramp in size order, so darkest = largest holder.
+  - name: "Nexus Capital pool"
+    color: "#10B981"
+    addresses:
+      - { address: "0x27f23c710dd3d878fe9393d93465fed1302f2ebd", chains: [ethereum] }
 
 etherfi:
   enabled: true

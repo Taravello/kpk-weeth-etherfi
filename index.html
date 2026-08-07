@@ -203,11 +203,16 @@
   }
 
   /* Monochrome brand ramp, darkest = largest holder. Mirrors the AUM page's
-     "direction and weight carried by tone, never by hue" rule. */
+     "direction and weight carried by tone, never by hue" rule.
+     An entity may carry an explicit brand colour (config.yaml -> clients[].color);
+     the ramp is then dealt out across the remaining entities in size order, so
+     darkest still reads as largest within the monochrome set. */
   var RAMP = ["#1F1F1F", "#6C6B67", "#97968F", "#B4B3AC", "#C6C5BE", "#DCDBD4"];
   var ORDER = D.daos.map(function (d) { return d.name; });
-  var COLOR = {};
-  ORDER.forEach(function (n, i) { COLOR[n] = RAMP[Math.min(i, RAMP.length - 1)]; });
+  var COLOR = {}, ramped = 0;
+  D.daos.forEach(function (d) {
+    COLOR[d.name] = d.color || RAMP[Math.min(ramped++, RAMP.length - 1)];
+  });
 
   // ---- formatting -------------------------------------------------------
   function esc(s) {

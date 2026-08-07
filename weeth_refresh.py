@@ -77,6 +77,13 @@ def load_config() -> dict:
     return yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
 
 
+def client_colors(config: dict) -> dict[str, str]:
+    """Optional per-client brand colour. Entities without one fall back to the
+    monochrome ramp in the page, dealt out in size order."""
+    return {str(c.get("name", "")).strip(): c["color"]
+            for c in config.get("clients", []) if c.get("color")}
+
+
 def wallet_registry(config: dict) -> list[tuple[str, str]]:
     """[(wallet, dao)] for every managed address. Addresses are chain-agnostic:
     a wallet listed for Gnosis only can still hold mainnet weETH, so no chain
@@ -271,7 +278,8 @@ def verify(chain: Chain, token: str, registry: list[tuple[str, str]], events: li
 # ---------------------------------------------------------------------------
 
 def build_snapshot(events: list[dict], prices: dict, token: dict, registry: list[tuple[str, str]],
-                   mode: str, now: dt.datetime, price_note: str, verification: dict) -> dict:
+                   mode: str, now: dt.datetime, price_note: str, verification: dict,
+                   colors: dict[str, str] | None = None) -> dict:
     events = sorted(events, key=lambda e: (e["day"], e["dao"]))
     weeth_usd = float(prices["weeth_usd"])
     eth_usd = float(prices["eth_usd"])
@@ -320,6 +328,8 @@ def build_snapshot(events: list[dict], prices: dict, token: dict, registry: list
     total = sum(running.values())
     daos = sorted(per_dao.values(), key=lambda d: -d["weeth"])
     for d in daos:
+        if (colors or {}).get(d["name"]):
+            d["color"] = colors[d["name"]]
         d["usd"] = round(d["weeth"] * weeth_usd, 2)
         d["eth_equivalent"] = round(d["weeth"] * ratio, 4)
         d["share_pct"] = round(100 * d["weeth"] / total, 2) if total else 0.0
@@ -448,7 +458,8 @@ def main() -> int:
     if not args.offline:
         cache_path.write_text(json.dumps(cache, indent=2) + "\n", encoding="utf-8")
 
-    snapshot = build_snapshot(events, prices, token, registry, mode, now, price_note, verification)
+    snapshot = build_snapshot(events, prices, token, registry, mode, now, price_note, verification,
+                              colors=client_colors(config))
 
     LATEST.write_text(json.dumps(snapshot, indent=2) + "\n", encoding="utf-8")
     DATA_JS.write_text("window.__WEETH_DATA__ = " + json.dumps(snapshot, separators=(",", ":")) + ";\n",
