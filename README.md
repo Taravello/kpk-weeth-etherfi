@@ -4,7 +4,7 @@ A single self-refreshing page showing the cumulative amount of wrapped Ethereum
 (**weETH**) that the DAOs under [kpk](https://kpk.io) management have allocated
 to **ether.fi**, and how that position was built up over time.
 
-**Live:** https://taravellokpk.github.io/kpk-weeth-etherfi/
+**Live:** https://taravello.github.io/kpk-weeth-etherfi/
 
 ## What it measures
 
