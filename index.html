@@ -377,6 +377,12 @@
                    : "drift of " + fmt(V.max_drift_weeth, 6) + " weETH detected and reconciled") +
         ".</p>"
       : "") +
+    (V.scan_ok === false
+      ? "<p><strong>Note.</strong> The transfer-log scan was unavailable on the last refresh, so the " +
+        "positions above were reconciled directly against onchain balances instead. Every amount is " +
+        "exact; a transfer inside that window may be attributed to the wrong day in the timeline until " +
+        "the next successful scan.</p>"
+      : "") +
     "</div>";
 
   app.innerHTML = html;

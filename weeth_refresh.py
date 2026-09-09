@@ -110,15 +110,19 @@ class Chain:
     through the endpoint list, so one node being down or rate-limiting never
     fails the refresh."""
 
-    def __init__(self, rpcs: list[str], timeout: int = 25):
+    def __init__(self, rpcs: list[str], timeout: int = 25, log_chunk: int = 9000):
         self.rpcs = list(rpcs)
         self.timeout = timeout
+        self.log_chunk = log_chunk
         self.session = requests.Session()
+        self.last_error = ""
         self._block_time: dict[int, int] = {}
 
     def call(self, method: str, params: list) -> object | None:
         payload = {"jsonrpc": "2.0", "id": 1, "method": method, "params": params}
+        errors: list[str] = []
         for i, rpc in enumerate(self.rpcs):
+            host = rpc.split("//", 1)[-1].split("/", 1)[0]
             try:
                 r = self.session.post(rpc, json=payload, timeout=self.timeout)
                 body = r.json()
@@ -126,8 +130,15 @@ class Chain:
                     if i:            # promote the endpoint that answered
                         self.rpcs.insert(0, self.rpcs.pop(i))
                     return body["result"]
-            except Exception:  # noqa: BLE001 — try the next endpoint
-                continue
+                err = body.get("error") or {}
+                errors.append(f"{host}: {err.get('code', r.status_code)} "
+                              f"{str(err.get('message', 'null result'))[:70]}")
+            except Exception as exc:  # noqa: BLE001 — try the next endpoint
+                errors.append(f"{host}: {type(exc).__name__}")
+        # Retained so callers can report WHY every endpoint refused. Swallowing
+        # these is what made the 2026-09 outage take a separate investigation to
+        # diagnose: the log said only "failed on every endpoint".
+        self.last_error = " | ".join(errors)
         return None
 
     def head(self) -> int | None:
@@ -150,11 +161,12 @@ class Chain:
         return ts
 
     def transfer_logs(self, token: str, wallets: list[str], lo: int, hi: int,
-                      chunk: int = 9000) -> list[dict] | None:
+                      chunk: int | None = None) -> list[dict] | None:
         """Every Transfer log of `token` where a managed wallet is sender or
         recipient, across [lo, hi]. Public nodes cap the block span per request,
         so the range is walked in chunks. Returns None if any chunk fails, so a
         partial scan is never mistaken for 'no activity'."""
+        chunk = chunk or self.log_chunk
         padded = ["0x" + w.lower().replace("0x", "").rjust(64, "0") for w in wallets]
         found: dict[tuple[str, str], dict] = {}
         start = lo
@@ -166,7 +178,8 @@ class Chain:
                     "fromBlock": hex(start), "toBlock": hex(end),
                     "address": token, "topics": topics}])
                 if res is None:
-                    log.error("eth_getLogs failed for blocks %d-%d on every endpoint.", start, end)
+                    log.error("eth_getLogs failed for blocks %d-%d on every endpoint -> %s",
+                              start, end, self.last_error)
                     return None
                 for entry in res:
                     # dedupe: a managed-to-managed transfer matches both filters
@@ -404,31 +417,53 @@ def main() -> int:
                                               "max_drift_weeth": None})
 
     if not args.offline:
-        chain = Chain(config.get("rpc", {}).get("endpoints", []))
+        rcfg = config.get("rpc", {})
+        chain = Chain(rcfg.get("endpoints", []), log_chunk=int(rcfg.get("log_chunk_blocks", 9000)))
         head = chain.head()
         if head is None:
-            log.error("No public RPC endpoint responded. Nothing written.")
+            # With no head block nothing can be read or verified, so holding the
+            # last good snapshot is the only honest outcome.
+            log.error("No public RPC endpoint responded -> %s", chain.last_error)
             return 1
         last_block = int(cache.get("last_block") or 0)
+        scan_ok = True
 
-        if last_block:
+        if last_block and head > last_block:
             span = head - last_block
             log.info("Scanning blocks %d-%d (%d blocks) for weETH transfers.", last_block + 1, head, span)
-            new = scan(chain, token["address"], registry, last_block + 1, head, decimals) if span > 0 else []
+            new = scan(chain, token["address"], registry, last_block + 1, head, decimals)
             if new is None:
-                log.error("Block scan incomplete; keeping the previous cursor and cache.")
-                return 1
-            if new:
+                # Transfer-log history is BEST EFFORT. Free RPC tiers restrict
+                # archive eth_getLogs, and a scan outage must not freeze the
+                # page — that is exactly what stalled it for five days in
+                # 2026-09. balanceOf still yields the exact position, so the
+                # verify pass below reconciles every total and the cursor still
+                # advances. We lose only the precise DAY of a transfer inside
+                # this window, never its amount. Holding the cursor would
+                # guarantee a permanent stall: the gap only grows, and a wider
+                # gap is judged more "archive" by the very endpoints that
+                # refused it.
+                log.warning("Log scan failed for blocks %d-%d; falling back to balance "
+                            "reconciliation for this window. Amounts stay exact; per-day "
+                            "attribution is approximated to today.", last_block + 1, head)
+                scan_ok, new = False, []
+            elif new:
                 log.info("Found %d new (day, DAO) flows.", len(new))
             events = merge_events(events, new)
-        else:
+        elif not last_block:
             # First run on this cursor: the committed cache is the backfill. The
             # balanceOf check below proves whether it is complete as of `head`.
             log.info("No scan cursor yet; validating the committed backfill against the chain.")
 
         fixes, verification = verify(chain, token["address"], registry, events, decimals, today)
+        if not verification.get("wallets_checked"):
+            # No balance read succeeded either, so the headline figure is
+            # unknowable this run. Publish nothing.
+            log.error("Could not read any wallet balance -> %s", chain.last_error)
+            return 1
         if fixes:
             events = merge_events(events, fixes)
+        verification["scan_ok"] = scan_ok
         mode = "live"
 
         cache = {**cache, "fetched_at": now.strftime("%Y-%m-%d %H:%M UTC"),

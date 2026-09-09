@@ -49,10 +49,24 @@ etherfi:
 # Public Ethereum RPC endpoints — no key, no account, no rate-limit tier.
 # Tried in order; whichever answers first is promoted for the rest of the run,
 # so one node being down or throttling never fails a refresh.
+#
+# ORDERING MATTERS. The list is led by endpoints that serve historical
+# `eth_getLogs` for free, because that is the one call the free tiers restrict.
+# Verified 2026-09-09; the previous list had rotted in every position:
+#   drpc.org        400 "can't route your request to suitable provider"
+#   publicnode.com  403 "archive requests require a personal token"
+#   rpc.ankr.com    now requires an API key
+#   cloudflare-eth  eth_getLogs capped at 800 blocks
+#   eth.llamarpc    525, gone
+# The tail entries below cannot serve archive logs but answer eth_call and
+# eth_blockNumber fine, so they remain useful fallbacks for the balance reads
+# that determine the headline figure.
 rpc:
   endpoints:
-    - "https://eth.drpc.org"
-    - "https://ethereum.publicnode.com"
-    - "https://rpc.ankr.com/eth"
-    - "https://cloudflare-eth.com"
-    - "https://eth.llamarpc.com"
+    - "https://gateway.tenderly.co/public/mainnet"     # logs: 100k+ block range
+    - "https://eth.api.onfinality.io/public"           # logs: 100k+ block range
+    - "https://rpc.mevblocker.io"                      # logs: ~9k block range
+    - "https://ethereum-rpc.publicnode.com"            # balances only
+    - "https://eth.merkle.io"                          # balances only
+    - "https://eth.drpc.org"                           # balances only
+  log_chunk_blocks: 9000       # smallest window the log-capable endpoints all accept
