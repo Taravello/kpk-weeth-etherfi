@@ -1,6 +1,6 @@
 {
   "_comment": "Append-only log of weETH (ether.fi) allocation events for the kpk-managed DAOs, read from Ethereum public RPC Transfer logs. Each row is a day on which at least one weETH transfer touched a managed wallet; net_flow is gross in minus gross out for that DAO that day. `last_block` is the scan cursor: each run reads only the blocks mined since it, then verifies the replayed history against live balanceOf. Committed so the page can be rebuilt offline.",
-  "fetched_at": "2026-09-10 12:16 UTC",
+  "fetched_at": "2026-09-11 12:14 UTC",
   "token_address": "0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee",
   "events": [
     {
@@ -113,13 +113,13 @@
     }
   ],
   "prices": {
-    "weeth_usd": 2712.66,
-    "eth_usd": 2459.71,
-    "as_of": "2026-09-10 12:16 UTC",
+    "weeth_usd": 2705.77,
+    "eth_usd": 2453.74,
+    "as_of": "2026-09-11 12:14 UTC",
     "source": "coingecko spot"
   },
   "source": "ethereum public RPC (balanceOf + Transfer logs)",
-  "last_block": 25946929,
+  "last_block": 25954093,
   "verification": {
     "method": "erc20 balanceOf via public RPC",
     "wallets_checked": 7,
