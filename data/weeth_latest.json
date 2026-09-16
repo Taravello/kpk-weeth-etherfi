@@ -1,6 +1,6 @@
 {
-  "date": "2026-09-15",
-  "updated_at": "2026-09-15 12:43 UTC",
+  "date": "2026-09-16",
+  "updated_at": "2026-09-16 12:38 UTC",
   "mode": "live",
   "token": {
     "symbol": "weETH",
@@ -10,10 +10,10 @@
     "coingecko": "wrapped-eeth"
   },
   "prices": {
-    "weeth_usd": 2733.12,
-    "eth_usd": 2475.16,
-    "weeth_eth_ratio": 1.10422,
-    "as_of": "2026-09-15 12:43 UTC",
+    "weeth_usd": 2656.96,
+    "eth_usd": 2405.97,
+    "weeth_eth_ratio": 1.10432,
+    "as_of": "2026-09-16 12:38 UTC",
     "source": "coingecko spot"
   },
   "verification": {
@@ -24,18 +24,18 @@
     "scan_ok": true
   },
   "totals": {
-    "weeth": 16649.383101,
-    "usd": 45504761.94,
-    "eth_equivalent": 18384.5739,
-    "gross_in": 16682.251669,
+    "weeth": 16651.868397,
+    "usd": 44243348.26,
+    "eth_equivalent": 18388.9858,
+    "gross_in": 16684.736965,
     "gross_out": 32.868568,
     "daos_allocated": 5,
     "daos_managed": 5,
     "wallets": 7,
-    "events": 19,
-    "transfers": 21,
+    "events": 23,
+    "transfers": 26,
     "first_allocation": "2024-08-06",
-    "last_allocation": "2026-09-11"
+    "last_allocation": "2026-09-15"
   },
   "daos": [
     {
@@ -49,64 +49,64 @@
       "last": "2026-07-08",
       "wallet": "0x27f23c710dd3d878fe9393d93465fed1302f2ebd",
       "color": "#10B981",
-      "usd": 22006614.39,
-      "eth_equivalent": 8890.9866,
-      "share_pct": 48.36
+      "usd": 21393387.11,
+      "eth_equivalent": 8891.793,
+      "share_pct": 48.35
     },
     {
       "name": "ENS",
-      "weeth": 7449.133774,
-      "gross_in": 7449.133774,
+      "weeth": 7449.311247,
+      "gross_in": 7449.311247,
       "gross_out": 0.0,
-      "events": 4,
-      "transfers": 4,
+      "events": 5,
+      "transfers": 5,
       "first": "2026-06-23",
-      "last": "2026-07-23",
+      "last": "2026-09-15",
       "wallet": "0x4f2083f5fbede34c2714affb3105539775f7fe64",
-      "usd": 20359376.5,
-      "eth_equivalent": 8225.479,
+      "usd": 19792522.01,
+      "eth_equivalent": 8226.4209,
       "share_pct": 44.74
     },
     {
       "name": "CoW DAO",
-      "weeth": 694.087231,
-      "gross_in": 694.087231,
+      "weeth": 696.379225,
+      "gross_in": 696.379225,
       "gross_out": 0.0,
-      "events": 4,
-      "transfers": 5,
+      "events": 5,
+      "transfers": 7,
       "first": "2026-07-13",
-      "last": "2026-09-11",
+      "last": "2026-09-15",
       "wallet": "0x616de58c011f8736fa20c7ae5352f7f6fb9f0669",
-      "usd": 1897023.69,
-      "eth_equivalent": 766.4247,
-      "share_pct": 4.17
+      "usd": 1850251.74,
+      "eth_equivalent": 769.0253,
+      "share_pct": 4.18
     },
     {
       "name": "Balancer DAO",
-      "weeth": 350.823063,
-      "gross_in": 350.823063,
+      "weeth": 350.838351,
+      "gross_in": 350.838351,
       "gross_out": 0.0,
-      "events": 1,
-      "transfers": 1,
+      "events": 2,
+      "transfers": 2,
       "first": "2026-08-05",
-      "last": "2026-08-05",
+      "last": "2026-09-15",
       "wallet": "0x0efccbb9e2c09ea29551879bd9da32362b32fc89",
-      "usd": 958841.53,
-      "eth_equivalent": 387.3857,
+      "usd": 932163.47,
+      "eth_equivalent": 387.4377,
       "share_pct": 2.11
     },
     {
       "name": "Nexus Mutual",
-      "weeth": 103.51021,
-      "gross_in": 125.008562,
+      "weeth": 103.510751,
+      "gross_in": 125.009103,
       "gross_out": 21.498352,
-      "events": 5,
-      "transfers": 6,
+      "events": 6,
+      "transfers": 7,
       "first": "2025-04-30",
-      "last": "2026-06-26",
+      "last": "2026-09-15",
       "wallet": "0x8e53d04644e9ab0412a8c6bd228c84da7664cfe3",
-      "usd": 282905.83,
-      "eth_equivalent": 114.298,
+      "usd": 275023.93,
+      "eth_equivalent": 114.309,
       "share_pct": 0.62
     }
   ],
@@ -333,17 +333,60 @@
     },
     {
       "day": "2026-09-15",
-      "total": 16649.383101,
+      "total": 16651.868397,
       "by_dao": {
-        "Balancer DAO": 350.823063,
-        "CoW DAO": 694.087231,
-        "ENS": 7449.133774,
+        "Balancer DAO": 350.838351,
+        "CoW DAO": 696.379225,
+        "ENS": 7449.311247,
         "Nexus Capital pool": 8051.828823,
-        "Nexus Mutual": 103.51021
+        "Nexus Mutual": 103.510751
+      }
+    },
+    {
+      "day": "2026-09-16",
+      "total": 16651.868397,
+      "by_dao": {
+        "Balancer DAO": 350.838351,
+        "CoW DAO": 696.379225,
+        "ENS": 7449.311247,
+        "Nexus Capital pool": 8051.828823,
+        "Nexus Mutual": 103.510751
       }
     }
   ],
   "events": [
+    {
+      "day": "2026-09-15",
+      "dao": "Nexus Mutual",
+      "delta": 0.000541,
+      "transfers": 1,
+      "dao_total": 103.51075109302253,
+      "total": 16651.868396650494
+    },
+    {
+      "day": "2026-09-15",
+      "dao": "ENS",
+      "delta": 0.177473,
+      "transfers": 1,
+      "dao_total": 7449.311246802619,
+      "total": 16651.867855650493
+    },
+    {
+      "day": "2026-09-15",
+      "dao": "CoW DAO",
+      "delta": 2.291993920465634,
+      "transfers": 2,
+      "dao_total": 696.3792245765356,
+      "total": 16651.690382650493
+    },
+    {
+      "day": "2026-09-15",
+      "dao": "Balancer DAO",
+      "delta": 0.015288,
+      "transfers": 1,
+      "dao_total": 350.8383512047732,
+      "total": 16649.398388730027
+    },
     {
       "day": "2026-09-11",
       "dao": "CoW DAO",
