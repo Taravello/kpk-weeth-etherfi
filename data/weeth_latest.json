@@ -1,6 +1,6 @@
 {
-  "date": "2026-09-23",
-  "updated_at": "2026-09-23 12:47 UTC",
+  "date": "2026-09-24",
+  "updated_at": "2026-09-24 12:45 UTC",
   "mode": "live",
   "token": {
     "symbol": "weETH",
@@ -10,10 +10,10 @@
     "coingecko": "wrapped-eeth"
   },
   "prices": {
-    "weeth_usd": 3006.89,
-    "eth_usd": 2723.25,
-    "weeth_eth_ratio": 1.104155,
-    "as_of": "2026-09-23 12:47 UTC",
+    "weeth_usd": 2918.43,
+    "eth_usd": 2644.56,
+    "weeth_eth_ratio": 1.10356,
+    "as_of": "2026-09-24 12:45 UTC",
     "source": "coingecko spot"
   },
   "verification": {
@@ -25,8 +25,8 @@
   },
   "totals": {
     "weeth": 16700.331894,
-    "usd": 50216060.97,
-    "eth_equivalent": 18439.7543,
+    "usd": 48738749.61,
+    "eth_equivalent": 18429.8143,
     "gross_in": 16733.200462,
     "gross_out": 32.868568,
     "daos_allocated": 5,
@@ -49,8 +49,8 @@
       "last": "2026-07-08",
       "wallet": "0x27f23c710dd3d878fe9393d93465fed1302f2ebd",
       "color": "#10B981",
-      "usd": 24210963.57,
-      "eth_equivalent": 8890.4667,
+      "usd": 23498698.79,
+      "eth_equivalent": 8885.6743,
       "share_pct": 48.21
     },
     {
@@ -63,8 +63,8 @@
       "first": "2026-06-23",
       "last": "2026-09-15",
       "wallet": "0x4f2083f5fbede34c2714affb3105539775f7fe64",
-      "usd": 22399259.49,
-      "eth_equivalent": 8225.194,
+      "usd": 21740293.42,
+      "eth_equivalent": 8220.7601,
       "share_pct": 44.61
     },
     {
@@ -77,8 +77,8 @@
       "first": "2026-07-13",
       "last": "2026-09-18",
       "wallet": "0x616de58c011f8736fa20c7ae5352f7f6fb9f0669",
-      "usd": 2239660.13,
-      "eth_equivalent": 822.4218,
+      "usd": 2173771.34,
+      "eth_equivalent": 821.9785,
       "share_pct": 4.46
     },
     {
@@ -91,8 +91,8 @@
       "first": "2026-08-05",
       "last": "2026-09-15",
       "wallet": "0x0efccbb9e2c09ea29551879bd9da32362b32fc89",
-      "usd": 1054932.33,
-      "eth_equivalent": 387.3799,
+      "usd": 1023897.17,
+      "eth_equivalent": 387.1711,
       "share_pct": 2.1
     },
     {
@@ -105,8 +105,8 @@
       "first": "2025-04-30",
       "last": "2026-09-15",
       "wallet": "0x8e53d04644e9ab0412a8c6bd228c84da7664cfe3",
-      "usd": 311245.44,
-      "eth_equivalent": 114.2919,
+      "usd": 302088.88,
+      "eth_equivalent": 114.2303,
       "share_pct": 0.62
     }
   ],
@@ -354,7 +354,7 @@
       }
     },
     {
-      "day": "2026-09-23",
+      "day": "2026-09-24",
       "total": 16700.331894,
       "by_dao": {
         "Balancer DAO": 350.838351,
