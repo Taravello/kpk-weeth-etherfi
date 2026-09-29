@@ -1,6 +1,6 @@
 {
-  "date": "2026-09-28",
-  "updated_at": "2026-09-28 15:36 UTC",
+  "date": "2026-09-29",
+  "updated_at": "2026-09-29 14:07 UTC",
   "mode": "live",
   "token": {
     "symbol": "weETH",
@@ -355,6 +355,17 @@
     },
     {
       "day": "2026-09-28",
+      "total": 16700.045118,
+      "by_dao": {
+        "Balancer DAO": 350.838351,
+        "CoW DAO": 744.842722,
+        "ENS": 7449.311247,
+        "Nexus Capital pool": 8051.542047,
+        "Nexus Mutual": 103.510751
+      }
+    },
+    {
+      "day": "2026-09-29",
       "total": 16700.045118,
       "by_dao": {
         "Balancer DAO": 350.838351,
